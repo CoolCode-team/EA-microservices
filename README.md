@@ -1,6 +1,4 @@
-Claro, Clara! Aqui está o `README.md` atualizado com a seção de membros da equipe:
 
----
 
 # 📦 Projeto da 2ª Unidade - Arquitetura de Microserviços
 
