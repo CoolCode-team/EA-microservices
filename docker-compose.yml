@@ -1,0 +1,23 @@
+services:
+  database:
+    container_name: database
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: ea_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  account-service:
+    container_name: account-service
+    ports:
+      - "8081:8080"
+    build:
+      context: ./accountservice
+      dockerfile: Dockerfile
+
+volumes:
+  db_data:
+    driver: local
