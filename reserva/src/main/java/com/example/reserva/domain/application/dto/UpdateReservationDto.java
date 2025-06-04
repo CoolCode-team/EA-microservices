@@ -1,12 +1,13 @@
-package com.ea.backend.domain.reservation.application.dto;
+package com.example.reserva.domain.application.dto;
+
+import java.time.OffsetDateTime;
+
+import org.hibernate.validator.constraints.UUID;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
-
-import java.time.OffsetDateTime;
 
 
 @Setter

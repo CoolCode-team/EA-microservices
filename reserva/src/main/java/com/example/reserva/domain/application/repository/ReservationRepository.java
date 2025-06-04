@@ -1,13 +1,4 @@
-package com.ea.backend.domain.reservation.application.repository;
-
-import com.ea.backend.domain.reservation.enterprise.entity.Reservation;
-import com.ea.backend.domain.reservation.enterprise.entity.ReservationStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+package com.example.reserva.domain.application.repository;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -16,7 +7,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.example.reserva.domain.enterprise.entity.Reservation;
+import com.example.reserva.domain.enterprise.entity.ReservationStatus;
+
+public interface ReservationRepository extends JpaRepository<Reservation, String> {
 
     @Query(
             "SELECT r FROM reservations r WHERE r.academicSpace.id = :academicSpaceId AND " +

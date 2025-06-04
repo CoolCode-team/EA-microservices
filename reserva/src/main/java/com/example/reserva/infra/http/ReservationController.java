@@ -1,14 +1,15 @@
-package com.ea.backend.infra.http;
+package com.example.reserva.infra.http;
 
 
-import com.ea.backend.domain.reservation.application.dto.CreateReservationDto;
-import com.ea.backend.domain.reservation.application.services.ReservationService;
-import com.ea.backend.domain.reservation.enterprise.entity.Reservation;
-import com.ea.backend.infra.http.model.PaginatedResponseBuilder;
-import com.ea.backend.infra.security.UserAuthenticated;
+import com.example.reserva.domain.application.dto.CreateReservationDto;
+import com.example.reserva.domain.application.dto.ReservationResponseDto;
+import com.example.reserva.domain.application.services.ReservationService;
+import com.example.reserva.infra.http.model.PaginatedResponseBuilder;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import com.example.reserva.domain.enterprise.entity.Reservation;
 
 @RestController
 @RequestMapping("/reservations")
@@ -26,12 +29,12 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @PatchMapping("/{reservationId}/checkout")
-    public ResponseEntity<?> updateReservationStatus(@PathVariable String reservationId, HttpServletRequest request) {
+    @PatchMapping("/{reservationId}/{userId}/checkout")
+    public ResponseEntity<?> updateReservationStatus(@PathVariable UUID userId, String reservationId, HttpServletRequest request) {
         try {
-            var user = (UserAuthenticated) request.getAttribute("user");
+            // var user = (UserAuthenticated) request.getAttribute("user");
 
-            this.reservationService.markReservationAsCheckedOut(UUID.fromString(reservationId), user.getUser().getId());
+            this.reservationService.markReservationAsCheckedOut(UUID.fromString(reservationId), userId);
 
             return ResponseEntity.ok().body("Reservation updated successfully");
 
@@ -41,10 +44,10 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createReservation(@RequestBody @Valid CreateReservationDto dto, HttpServletRequest request) {
-        var authenticatedUser = (UserAuthenticated) request.getAttribute("user");
+    public ResponseEntity<?> createReservation(@RequestBody @Valid CreateReservationDto dto, HttpServletRequest request, @PathVariable String userId) {
+        // var authenticatedUser = (UserAuthenticated) request.getAttribute("user");
 
-        dto.setUserId(authenticatedUser.getUser().getId().toString());
+        dto.setUserId(userId);
 
         this.reservationService.createReservation(dto);
 
@@ -56,12 +59,13 @@ public class ReservationController {
       HttpServletRequest req,
       @Valid @RequestParam("page") int page,
       @RequestParam("pageSize") int pageSize,
-      @RequestParam(value = "status", required = false) Optional<String> status) {
+      @RequestParam(value = "status", required = false) Optional<String> status,
+      @PathVariable UUID userId) {
 
-    var authenticatedUser = (UserAuthenticated) req.getAttribute("user");
+    // var authenticatedUser = (UserAuthenticated) req.getAttribute("user");
 
       return ResponseEntity.ok(new PaginatedResponseBuilder<>(
               this.reservationService.fetchReservationByUserIdAndStatusPaged(
-                      authenticatedUser.getUser().getId(), status, page - 1, pageSize)));
+                      userId, status, page - 1, pageSize)));
   }
 }

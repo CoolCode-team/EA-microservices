@@ -1,17 +1,19 @@
-package com.ea.backend.domain.reservation.application.services;
+package com.example.reserva.domain.application.services;
 
-import com.ea.backend.domain.reservation.application.dto.CreateReservationDto;
-import com.ea.backend.domain.reservation.application.dto.UpdateReservationDto;
-import com.ea.backend.domain.reservation.application.repository.ReservationRepository;
-import com.ea.backend.domain.reservation.enterprise.entity.Reservation;
-import com.ea.backend.domain.reservation.enterprise.entity.ReservationStatus;
-import com.ea.backend.domain.reservation.enterprise.events.ReservationCanceledEvent;
-import com.ea.backend.domain.space.application.repository.AcademicSpaceRepository;
-import com.ea.backend.domain.space.enterprise.AcademicSpace;
-import com.ea.backend.domain.user.application.repository.UserRepository;
-import com.ea.backend.shared.DomainException;
-import com.ea.backend.shared.DomainExceptionCode;
+import com.example.reserva.domain.application.dto.CreateReservationDto;
+import com.example.reserva.domain.application.dto.UpdateReservationDto;
+import com.example.reserva.domain.application.repository.ReservationRepository;
+import com.example.reserva.domain.enterprise.entity.Reservation;
+import com.example.reserva.domain.enterprise.entity.ReservationStatus;
+import com.example.reserva.domain.enterprise.events.ReservationCanceledEvent;
+// import com.example.reserva.domain.space.application.repository.AcademicSpaceRepository;
+// import com.example.reserva.domain.space.enterprise.AcademicSpace;
+// import com.example.reserva.domain.user.application.repository.UserRepository;
+import com.example.reserva.shared.DomainException;
+import com.example.reserva.shared.DomainExceptionCode;
+
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -25,17 +27,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.reserva.domain.application.dto.ReservationResponseDto;
+
 @Service
 public class ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AcademicSpaceRepository academicSpaceRepository;
 
 
     @Autowired
@@ -51,27 +49,25 @@ public class ReservationService {
     @Transactional
     public void createReservation(CreateReservationDto dto) {
 
-        var user = this.userRepository.findUserById(UUID.fromString(dto.getUserId()))
-                .orElseThrow(() -> new DomainException("User not found"));
+        var user = new ReservationResponseDto().getUserId();
 
-        var academicSpace = this.academicSpaceRepository.findAcademicSpaceById(UUID.fromString(dto.getAcademicSpaceId()))
-                .orElseThrow(() -> new DomainException("Academic Space not found"));
+        var academicSpace = new ReservationResponseDto().getAcademicSpaceId();
 
         var reservation = new Reservation();
 
-        if(!academicSpace.isAvailable()) {
+        if(academicSpace == null) {
             throw new DomainException("Space is not available");
         }
 
-        var userHasPendingReservation = this.reservationRepository.findReservationsByUserIdAndStatus(user.getId(), ReservationStatus.SCHEDULED);
+        var userHasPendingReservation = this.reservationRepository.findReservationsByUserIdAndStatus(UUID.fromString(user), ReservationStatus.SCHEDULED);
 
-        if (!userHasPendingReservation.isEmpty()) {
-            throw new DomainException("User already has a pending reservation", DomainExceptionCode.USER_HAS_PENDING_RESERVATIONS);
-        }
+        // if (!userHasPendingReservation.isEmpty()) {
+        //     throw new DomainException("User already has a pending reservation", DomainExceptionCode.USER_HAS_PENDING_RESERVATIONS);
+        // }
 
 
-        reservation.setUser(user);
-        reservation.setAcademicSpace(academicSpace);
+        reservation.setUserId(user);
+        reservation.setAcademicSpaceId(academicSpace);
         reservation.setStartDateTime(dto.getStartDateTime().withOffsetSameInstant(ZoneOffset.UTC));
         reservation.setEndDateTime(dto.getEndDateTime().withOffsetSameInstant(ZoneOffset.UTC));
         reservation.setStatus(ReservationStatus.SCHEDULED);
@@ -84,7 +80,7 @@ public class ReservationService {
 
 
         var overlappingReservations = this.reservationRepository.findOverlappingReservations(
-                academicSpace.getId(),
+                UUID.fromString(user),
                 reservation.getStartDateTime(),
                 reservation.getEndDateTime()
         );
@@ -178,6 +174,7 @@ public class ReservationService {
             }
             case "teacher" -> {
                 return this.reservationRepository.findAllByUserName(value, pageRequest);
+                
             }
             case "space" -> {
                 return this.reservationRepository.findAllByAcademicSpaceRoomName(value, pageRequest);
@@ -187,57 +184,51 @@ public class ReservationService {
 
     }
 
-    public void updateReservation(UpdateReservationDto dto) {
+    // public void updateReservation(UpdateReservationDto dto) {
 
 
-        var user = this.userRepository.findUserById(dto.getUserId())
-                .orElseThrow(() -> new DomainException("User not found"));
+    
+    //     var user = new ReservationResponseDto().getUserId();
 
-        var currentReservation = this.reservationRepository.findReservationById(dto.getReservationId().toString())
-                .filter(reservation -> reservation.getUser().getId().equals(user.getId())) // user is the owner
-                .filter(Reservation::isScheduled) // reservation is scheduled
-                .orElseThrow(() -> new DomainException("Invalid Reservation Operation"));
+    //     var academicSpace = new ReservationResponseDto().getAcademicSpaceId();
 
-        var academicSpace = this.academicSpaceRepository.findAcademicSpaceById(UUID.fromString(dto.getAcademicSpaceId()))
-                .filter(AcademicSpace::isAvailable)
-                .orElseThrow(() -> new DomainException("Invalid Academic Space", DomainExceptionCode.SPACE_NOT_AVAILABLE));
+    //     var reservation = new Reservation();
 
+    //     var userIsOwner = currentReservation.getUser().getId().equals(user.getId());
 
-        var userIsOwner = currentReservation.getUser().getId().equals(user.getId());
-
-        if (!userIsOwner) {
-            throw new DomainException("User is not the owner of the reservation");
-        }
+    //     if (!userIsOwner) {
+    //         throw new DomainException("User is not the owner of the reservation");
+    //     }
 
 
-        currentReservation.setAcademicSpace(academicSpace);
-        currentReservation.setStartDateTime(dto.getStartDateTime());
-        currentReservation.setEndDateTime(dto.getEndDateTime());
-        currentReservation.setStatus(ReservationStatus.SCHEDULED);
+    //     currentReservation.setAcademicSpace(academicSpace);
+    //     currentReservation.setStartDateTime(dto.getStartDateTime());
+    //     currentReservation.setEndDateTime(dto.getEndDateTime());
+    //     currentReservation.setStatus(ReservationStatus.SCHEDULED);
 
-        var isValidReservation = isIsValidReservation(currentReservation);
+    //     var isValidReservation = isIsValidReservation(currentReservation);
 
-        if (!isValidReservation) {
-            throw new DomainException("Invalid reservation interval");
-        }
-
-
-        var overlappingReservationsWithoutCurrentReservation = this.reservationRepository.findOverlappingReservations(
-                        academicSpace.getId(),
-                        currentReservation.getStartDateTime(),
-                        currentReservation.getEndDateTime()
-                )
-                .stream()
-                .filter(reservation -> !reservation.getId().equals(currentReservation.getId())) // Exclude currentReservation
-                .toList();
-
-        if (!overlappingReservationsWithoutCurrentReservation.isEmpty()) {
-            throw new DomainException("There is already a reservation for this space in this period", DomainExceptionCode.RESERVATION_INTERVAL_OVERLAP);
-        }
+    //     if (!isValidReservation) {
+    //         throw new DomainException("Invalid reservation interval");
+    //     }
 
 
-        this.reservationRepository.save(currentReservation);
+    //     var overlappingReservationsWithoutCurrentReservation = this.reservationRepository.findOverlappingReservations(
+    //                     academicSpace.getId(),
+    //                     currentReservation.getStartDateTime(),
+    //                     currentReservation.getEndDateTime()
+    //             )
+    //             .stream()
+    //             .filter(reservation -> !reservation.getId().equals(currentReservation.getId())) // Exclude currentReservation
+    //             .toList();
+
+    //     if (!overlappingReservationsWithoutCurrentReservation.isEmpty()) {
+    //         throw new DomainException("There is already a reservation for this space in this period", DomainExceptionCode.RESERVATION_INTERVAL_OVERLAP);
+    //     }
 
 
-    }
+    //     this.reservationRepository.save(currentReservation);
+
+
+    // }
 }

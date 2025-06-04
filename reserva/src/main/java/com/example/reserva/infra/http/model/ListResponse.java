@@ -1,4 +1,4 @@
-package com.ea.backend.infra.http.model;
+package com.example.reserva.infra.http.model;
 
 import org.springframework.http.ResponseEntity;
 

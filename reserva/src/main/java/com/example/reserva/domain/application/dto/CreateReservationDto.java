@@ -1,4 +1,4 @@
-package com.ea.backend.domain.reservation.application.dto;
+package com.example.reserva.domain.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

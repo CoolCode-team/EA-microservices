@@ -1,14 +1,15 @@
-package com.ea.backend.infra.http.model;
+package com.example.reserva.infra.http.model;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-import java.util.Map;
 
 
 @Schema(description = "Paginated response")

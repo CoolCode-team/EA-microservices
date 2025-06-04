@@ -1,4 +1,4 @@
-package com.ea.backend.domain.reservation.enterprise.entity;
+package com.example.reserva.domain.enterprise.entity;
 
 public enum ReservationStatus {
     CONFIRMED_BY_THE_USER("CONFIRMED_BY_THE_USER"),

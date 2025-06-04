@@ -1,8 +1,10 @@
-package com.ea.backend.domain.reservation.enterprise.events;
+package com.example.reserva.domain.enterprise.events;
 
-import com.ea.backend.domain.reservation.enterprise.entity.Reservation;
-import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
+
+import com.example.reserva.domain.enterprise.entity.Reservation;
+
+import lombok.Getter;
 
 @Getter
 public class ReservationCanceledEvent extends ApplicationEvent {

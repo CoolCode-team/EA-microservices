@@ -1,4 +1,4 @@
-package com.ea.backend.shared;
+package com.example.reserva.shared;
 
 import lombok.Getter;
 

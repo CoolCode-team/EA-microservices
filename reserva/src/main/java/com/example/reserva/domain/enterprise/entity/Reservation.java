@@ -1,16 +1,22 @@
-package com.ea.backend.domain.reservation.enterprise.entity;
+package com.example.reserva.domain.enterprise.entity;
 
-import com.ea.backend.domain.space.enterprise.AcademicSpace;
-import com.ea.backend.domain.user.enterprise.entity.User;
-import com.ea.backend.shared.DomainEntity;
-import jakarta.persistence.*;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+
+import com.example.reserva.shared.DomainEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
-import java.time.OffsetDateTime;
 
 @Setter
 @Getter
@@ -30,38 +36,34 @@ public class Reservation extends DomainEntity implements Serializable {
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime endDateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "academic_space_id", nullable = false)
-    private AcademicSpace academicSpace;
+    @Column(name = "academic_space_id", nullable = false)
+    private String academicSpaceId;
 
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
     private ReservationStatus status;
 
-
     public boolean isScheduled() {
-        return this.status.equals(ReservationStatus.SCHEDULED);
+        return ReservationStatus.SCHEDULED.equals(this.status);
     }
 
     public boolean isCanceled() {
-        return this.status.equals(ReservationStatus.CANCELED);
+        return ReservationStatus.CANCELED.equals(this.status);
     }
 
     public boolean isConfirmedByTheUser() {
-        return this.status.equals(ReservationStatus.CONFIRMED_BY_THE_USER);
+        return ReservationStatus.CONFIRMED_BY_THE_USER.equals(this.status);
     }
 
-    public boolean isConfirmedVyEnterprise() {
-        return this.status.equals(ReservationStatus.CONFIRMED_BY_THE_ENTERPRISE);
+    public boolean isConfirmedByEnterprise() {
+        return ReservationStatus.CONFIRMED_BY_THE_ENTERPRISE.equals(this.status);
     }
 
     public boolean isConfirmed() {
-        return this.isConfirmedByTheUser() || this.isConfirmedVyEnterprise();
+        return isConfirmedByTheUser() || isConfirmedByEnterprise();
     }
 
 }

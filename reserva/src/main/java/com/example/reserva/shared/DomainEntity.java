@@ -1,9 +1,13 @@
-package com.ea.backend.shared;
-
-import jakarta.persistence.*;
+package com.example.reserva.shared;
 import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @MappedSuperclass
 public class DomainEntity {

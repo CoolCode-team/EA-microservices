@@ -1,4 +1,4 @@
-package com.ea.backend.domain.reservation.application.services;
+package com.example.reserva.domain.application.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
