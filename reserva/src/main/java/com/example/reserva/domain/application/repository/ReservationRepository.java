@@ -71,11 +71,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
 
 
     @Query(
-            value = "SELECT r FROM reservations r " +
-                    "INNER JOIN r.academicSpace ac " +
-                    "WHERE ac.roomName LIKE CONCAT('%', :name, '%')"
+        value = """
+            SELECT r.id, r.start_date_time, r.end_date_time, r.status, r.academic_space_id, r.user_id
+            FROM reservations r
+            INNER JOIN academic_spaces a ON r.academic_space_id = a.id
+            WHERE a.room_name ILIKE CONCAT('%', :name, '%')
+            """,
+        nativeQuery = true
     )
-    Page<Reservation> findAllByAcademicSpaceRoomName(@Param("name") String name, Pageable pageable);
-
-
+    List<Object[]> findReservationsByAcademicSpaceRoomName(@Param("name") String name);
+    
 }

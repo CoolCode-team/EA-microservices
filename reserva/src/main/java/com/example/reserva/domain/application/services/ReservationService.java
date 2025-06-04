@@ -36,10 +36,6 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
 
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-
-
     private static boolean isIsValidReservation(Reservation reservation) {
 
         return reservation.getEndDateTime().isAfter(reservation.getStartDateTime());
@@ -108,7 +104,6 @@ public class ReservationService {
 
         this.reservationRepository.save(reservation);
 
-        this.applicationEventPublisher.publishEvent(new ReservationCanceledEvent(reservation));
     }
 
     public void markReservationAsCheckedOut(UUID reservationId, UUID userId) {
@@ -174,7 +169,7 @@ public class ReservationService {
             }
             case "teacher" -> {
                 return this.reservationRepository.findAllByUserName(value, pageRequest);
-                
+
             }
             case "space" -> {
                 return this.reservationRepository.findAllByAcademicSpaceRoomName(value, pageRequest);
