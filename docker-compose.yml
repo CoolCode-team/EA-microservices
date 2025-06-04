@@ -1,0 +1,57 @@
+services:
+  service_discovery:
+    container_name: service_discovery
+    build:
+      context: ./service-discovery
+      dockerfile: Dockerfile
+    ports:
+      - "8764:8764"
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+  database:
+    container_name: database
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: ea_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  
+  api-gateway:
+    depends_on:
+      - service_discovery
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+  account-service:
+    depends_on:
+      - service_discovery
+      - database
+    container_name: account-service
+    ports:
+      - "8081:8080"
+    build:
+      context: ./accountservice
+      dockerfile: Dockerfile
+  reserva_service:
+    depends_on:
+      - service_discovery
+      - database
+    container_name: reserva_service
+    ports:
+      - "8082:8080"
+    build:
+      context: ./reserva
+      dockerfile: Dockerfile
+  
+
+volumes:
+  db_data:
+    driver: local
