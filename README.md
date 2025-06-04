@@ -1,5 +1,8 @@
+Claro, Clara! Aqui está o `README.md` atualizado com a seção de membros da equipe:
 
-# 📦 Projeto da 2ª Unidade - Arquitetura de Microserviços - Equipe CoolCode
+---
+
+# 📦 Projeto da 2ª Unidade - Arquitetura de Microserviços
 
 ## 📌 Visão Geral
 
@@ -51,11 +54,11 @@ A nova arquitetura será composta por:
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Java 21 (com Spring Boot / Spring Cloud)**
+* **Java (Spring Boot / Spring Cloud)**
 * **PostgreSQL**
 * **Eureka Server (Service Discovery)**
 * **Spring Cloud Gateway (API Gateway)**
-* **Testes com Postman**
+* **Ferramenta para testes: Postman**
 
 ---
 
@@ -67,4 +70,17 @@ A nova arquitetura será composta por:
 * A linguagem usada deve ser **exclusivamente Java**
 * Testes poderão ser demonstrados via ferramentas de consumo de API
 * Não é necessário apresentar com o front-end, mas se utilizado, dispensa o uso das ferramentas de testes
+
+---
+
+## 👥 Membros da Equipe
+
+| Matrícula | Nome Completo                         | E-mail                                                                            |
+| --------- | ------------------------------------- | --------------------------------------------------------------------------------- |
+| 200028802 | Maria Clara Ferreira Mendes           | [mariaclara.mendes@ucsal.edu.br](mailto:mariaclara.mendes@ucsal.edu.br)           |
+| 200028863 | Maria Fernanda Pereira Barçante Costa | [mariafernanda.costa@ucsal.edu.br](mailto:mariafernanda.costa@ucsal.edu.br)       |
+| 200016718 | Davi dos Santos Ribeiro               | [davi.ribeiro@ucsal.edu.br](mailto:davi.ribeiro@ucsal.edu.br)                     |
+| 200029600 | Alisson de Oliveira dos Santos        | [alissonoliveira.santos@ucsal.edu.br](mailto:alissonoliveira.santos@ucsal.edu.br) |
+| 200029897 | Larissa da Silva Santana              | [larissasilva.santana@ucsal.edu.br](mailto:larissasilva.santana@ucsal.edu.br)     |
+| 200028754 | Murilo Moreno dos Santos Silva        | [murilomoreno.santos@ucsal.edu.br](mailto:murilomoreno.santos@ucsal.edu.br)       |
 
