@@ -1,5 +1,5 @@
 
-# 📦 Projeto da 2ª Unidade - Arquitetura de Microserviços
+# 📦 Projeto da 2ª Unidade - Arquitetura de Microserviços - Equipe CoolCode
 
 ## 📌 Visão Geral
 
