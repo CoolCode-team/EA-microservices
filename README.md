@@ -55,9 +55,7 @@ A nova arquitetura será composta por:
 * **PostgreSQL**
 * **Eureka Server (Service Discovery)**
 * **Spring Cloud Gateway (API Gateway)**
-* Ferramentas sugeridas para testes:
-
-  * **Swagger**, **Postman**, **Insomnia**
+* **Testes com Postman**
 
 ---
 
