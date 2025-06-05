@@ -25,6 +25,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
     )
     List<Reservation> findOverlappingReservations(
             @Param("academicSpaceId") UUID academicSpaceId,
+
+            
             @Param("startDateTime") OffsetDateTime startDateTime,
             @Param("endDateTime") OffsetDateTime endDateTime
     );
@@ -79,6 +81,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
             """,
         nativeQuery = true
     )
-    List<Object[]> findReservationsByAcademicSpaceRoomName(@Param("name") String name);
+    Page<Reservation> findReservationsByAcademicSpaceRoomName(@Param("name") String name, PageRequest page);
     
 }

@@ -172,7 +172,7 @@ public class ReservationService {
 
             }
             case "space" -> {
-                return this.reservationRepository.findAllByAcademicSpaceRoomName(value, pageRequest);
+                return this.reservationRepository.findReservationsByAcademicSpaceRoomName(value, pageRequest);
             }
             default -> throw new DomainException("Invalid filter column");
         }
