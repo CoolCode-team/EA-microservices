@@ -6,6 +6,8 @@
 
 Este projeto dá continuidade ao trabalho iniciado na 1ª Unidade, onde foi desenvolvida uma aplicação monolítica com um front-end conectado a um back-end centralizado (ver Figura 01 no material da disciplina). Para esta 2ª Unidade, o objetivo é reestruturar o back-end para uma **arquitetura de microserviços**, mantendo inicialmente o front-end inalterado, exceto pela URL de acesso à nova API.
 
+
+
 ---
 
 ## 🧱 Objetivo da 2ª Unidade
