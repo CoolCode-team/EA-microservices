@@ -1,6 +1,6 @@
 services:
   service_discovery:
-    container_name: service_discovery
+    container_name: service-discovery
     build:
       context: ./service-discovery
       dockerfile: Dockerfile
@@ -40,17 +40,27 @@ services:
     build:
       context: ./accountservice
       dockerfile: Dockerfile
-  reserva_service:
+  academic_spaces:
     depends_on:
       - service_discovery
       - database
-    container_name: reserva_service
+    container_name: academic-spaces
     ports:
       - "8082:8080"
     build:
-      context: ./reserva
+      context: ./academic_spaces
       dockerfile: Dockerfile
-  
+  reservation_service:
+    depends_on:
+      - service_discovery
+      - database
+    container_name: reservation-ervice
+    ports:
+      - "8083:8080"
+    build:
+      context: ./reservations
+      dockerfile: Dockerfile
+
 
 volumes:
   db_data:
