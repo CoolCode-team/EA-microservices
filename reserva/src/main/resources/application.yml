@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: reserva-serviced
+    name: reserva-service
 
 eureka:
   client:
