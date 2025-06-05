@@ -1,0 +1,18 @@
+server:
+  port: 8080  # Porta em que o API Gateway será iniciado
+
+spring:
+  application:
+    name: api-gateway  # Nome com o qual o gateway se registra no Eureka
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true  # Ativa o roteamento automático baseado em Eureka
+          lower-case-service-id: true  # Transforma os nomes dos serviços em minúsculo nas URLs 
+
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka  # Endereço do servidor Eureka
