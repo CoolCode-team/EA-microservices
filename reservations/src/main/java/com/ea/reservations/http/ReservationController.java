@@ -23,9 +23,9 @@ public class ReservationController {
     @PatchMapping("/{reservationId}/checkout")
     public ResponseEntity<?> updateReservationStatus(@PathVariable String reservationId, HttpServletRequest request) {
         try {
-            var user = (UserAuthenticated) request.getAttribute("user");
+            var authenticatedUserId =request.getHeader("X-User-Id");
 
-            this.reservationService.markReservationAsCheckedOut(UUID.fromString(reservationId), UUID.fromString(user.getUser().getId()));
+            this.reservationService.markReservationAsCheckedOut(UUID.fromString(reservationId), UUID.fromString(authenticatedUserId));
 
             return ResponseEntity.ok().body("Reservation updated successfully");
 
@@ -36,9 +36,11 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody @Valid CreateReservationDto dto, HttpServletRequest request) {
-        var authenticatedUser = (UserAuthenticated) request.getAttribute("user");
+        var authenticatedUserId =request.getHeader("X-User-Id");
 
-        dto.setUserId(authenticatedUser.getUser().getId().toString());
+        System.out.println(authenticatedUserId);
+
+        dto.setUserId(authenticatedUserId);
 
         this.reservationService.createReservation(dto);
 
@@ -50,12 +52,12 @@ public class ReservationController {
             HttpServletRequest req,
             @Valid @RequestParam("page") int page,
             @RequestParam("pageSize") int pageSize,
-            @RequestParam(value = "status", required = false) Optional<String> status) {
+            @RequestParam(value = "status", required = false) Optional<String> status,  HttpServletRequest request) {
 
-        var authenticatedUser = (UserAuthenticated) req.getAttribute("user");
+        var authenticatedUserId =request.getHeader("X-User-Id");
 
         return ResponseEntity.ok(new PaginatedResponseBuilder<>(
                 this.reservationService.fetchReservationByUserIdAndStatusPaged(
-                        UUID.fromString(authenticatedUser.getUser().getId()), status, page - 1, pageSize)));
+                        UUID.fromString(authenticatedUserId), status, page - 1, pageSize)));
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class AcademicSpace {
     private SpaceStatus status;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
     public Boolean isAvailable() {

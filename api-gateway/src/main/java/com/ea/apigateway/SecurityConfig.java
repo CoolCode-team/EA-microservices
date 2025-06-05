@@ -10,6 +10,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
   @Bean public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-    return  http.authorizeExchange(authorizeExchangeSpec ->  authorizeExchangeSpec.anyExchange().permitAll()).httpBasic(Customizer.withDefaults()).build();
+    return  http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .authorizeExchange(authorizeExchangeSpec ->
+                    authorizeExchangeSpec.anyExchange().permitAll()).build();
   }
 }

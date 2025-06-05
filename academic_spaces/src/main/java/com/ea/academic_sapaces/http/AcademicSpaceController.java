@@ -50,7 +50,7 @@ public class AcademicSpaceController {
 
 
 
-    @GetMapping("/spaces/all")
+    @GetMapping("/all")
     @Operation
     @ApiResponse(responseCode = "200")
     public ResponseEntity<?> listAllSpaces() {
@@ -59,7 +59,7 @@ public class AcademicSpaceController {
 
 
 
-    @PostMapping("/spaces")
+    @PostMapping
     @Operation
     @ApiResponse(responseCode = "201")
     public ResponseEntity<?> createSpace(@RequestBody @Valid CreateAcademicSpaceDto dto) {
