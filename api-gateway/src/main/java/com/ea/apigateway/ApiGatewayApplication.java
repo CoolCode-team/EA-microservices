@@ -1,4 +1,4 @@
-package br.com.mariaclaramendes.api_gateway;
+package com.ea.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
